@@ -1,0 +1,76 @@
+title: "Spacy Ukrainian model"
+
+directories: ["data", "corpus", "training", "package"]
+
+assets:
+  - url: "https://drive.google.com/u/1/uc?id=1bnY8Z8gVWy5W9KgyJrWJWJgyI1JjPhfQ&export=download&confirm=t"
+    dest: "data/ubercorpus.cased.tokenized.word2vec.300d.gz"
+    description: "Word2vec vectors"
+    checksum: "e3dd4de5676a4d4494e9671660ea9e88"
+  - url: "https://drive.google.com/u/1/uc?id=1fFMVQXvxZczDmWFtf_EOHsqmLj_hLf_a&export=download&confirm=t"
+    dest: "data/train.conllu.gz"
+    description: "Training data"
+    checksum: "8ca37341f4ae182ee983be2581ec89d9"
+  - url: "https://drive.google.com/u/1/uc?id=1Zxq5mUauojFGmv-Sk0YKfmkFiEwRLDs3&export=download&confirm=t"
+    dest: "data/dev.conllu.gz"
+    description: "Development data"
+    checksum: "8000c3c4d9715fffd48e5332264a769b"
+
+commands:
+  - name: extract
+    help: "Uncompress train, dev"
+    script:
+      - "gunzip --keep data/train.conllu.gz data/dev.conllu.gz"
+    deps:
+      - "data/train.conllu.gz"
+      - "data/dev.conllu.gz"
+    outputs:
+      - "data/train.conllu"
+      - "data/dev.conllu"
+
+  - name: corpus
+    help: "Convert the data to spaCy's format"
+    script:
+      - "python -m spacy convert data/train.conllu corpus --converter conllu --seg-sents --n-sents 10"
+      - "python -m spacy convert data/dev.conllu corpus --converter conllu --seg-sents --n-sents 10"
+    deps:
+      - "data/train.conllu"
+      - "data/dev.conllu"
+    outputs:
+      - "corpus/train.spacy"
+      - "corpus/dev.spacy"
+
+  - name: vectors
+    help: "Convert and prune vectors"
+    script:
+      - "python -m spacy init vectors uk data/ubercorpus.cased.tokenized.word2vec.300d.gz corpus/vectors --prune 20000 --name uk_word2vec_vectors_md" 
+    deps:
+      - "data/ubercorpus.cased.tokenized.word2vec.300d.gz"
+    outputs:
+      - "corpus/vectors"
+
+  - name: train
+    help: "Train the full pipeline"
+    script:
+      - "python -m spacy train config.cfg --output training"
+    deps:
+      - "config.cfg"
+      - "corpus/vectors"
+      - "corpus/train.spacy"
+      - "corpus/dev.spacy"
+    outputs:
+      - "training/model-best"
+
+  - name: package
+    help: "Package the trained model"
+    script:
+      - "python -m spacy package training/model-best package --name core_news_md --version 3.2.3 --force"
+    deps:
+      - "training/model-best"
+    outputs_no_cache:
+      - "package/uk_core_news_md-3.2.3/dist/uk_core_news_md-3.2.3.tar.gz"
+
+  - name: clean
+    help: "Remove intermediate files"
+    script:
+      - "rm -rf training/* corpus/* package/*"
