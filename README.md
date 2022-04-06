@@ -2,7 +2,7 @@
 
 SpaCy official Ukrainain model proposal.
 
-Ukrainain model is trained on large silver standard Ukrainain corpus annotated with morphology tags, syntax trees and PER, LOC, ORG NER-tags (available under MIT license).
+Ukrainain model is trained on <a href="https://huggingface.co/datasets/ukr-models/Ukr-Synth">large silver standard Ukrainain corpus</a> annotated with morphology tags, syntax trees and PER, LOC, ORG NER-tags (available under MIT license).
 Pretrained transformer encoder is <a href="https://huggingface.co/ukr-models/xlm-roberta-base-uk">XLM-Roberta base model (cut to using only Ukrainian/English tokens)</a>.
 Pretrained word embeddings for Ukrainain language are <a href="https://lang.org.ua/static/downloads/models/ubercorpus.cased.tokenized.word2vec.300d.bz2">Word2vec embeddings pretrained on Ubercorpus</a> (prepared by <a href="https://lang.org.ua/">lang-uk community</a>).
 This repo is available under MIT license.

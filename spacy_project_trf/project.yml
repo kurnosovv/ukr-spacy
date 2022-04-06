@@ -3,14 +3,14 @@ title: "Spacy Ukrainian model"
 directories: ["data", "corpus", "training", "package"]
 
 assets:
-  - url: "https://drive.google.com/u/1/uc?id=1fFMVQXvxZczDmWFtf_EOHsqmLj_hLf_a&export=download&confirm=t"
+  - url: "https://drive.google.com/u/1/uc?id=1olHea2k7IcEHWQLmJ02bdPsR84KPV65E&export=download&confirm=t"
     dest: "data/train.conllu.gz"
     description: "Training data"
-    checksum: "8ca37341f4ae182ee983be2581ec89d9"
-  - url: "https://drive.google.com/u/1/uc?id=1Zxq5mUauojFGmv-Sk0YKfmkFiEwRLDs3&export=download&confirm=t"
+    checksum: "8053d415856ce1ac165f78aba6082360"
+  - url: "https://drive.google.com/u/1/uc?id=1-zXCMNgmlUffinC1obPEH83pXPEKsQbU&export=download&confirm=t"
     dest: "data/dev.conllu.gz"
     description: "Development data"
-    checksum: "8000c3c4d9715fffd48e5332264a769b"
+    checksum: "965d4896de19c84154217b17eac84cfd"
 
 commands:
   - name: extract
